@@ -2,41 +2,41 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>Marketing Bot</title>
+    <title>ET Marketing Bot</title>
 
     <style>
-        /* ------------------------------
+        /* ---------------------------------------------------
            THEME VARIABLES
-        ------------------------------ */
+        --------------------------------------------------- */
         :root {
-            --bg: #f5f7fa;
+            --bg: #f7f7f7;
             --card: #ffffff;
             --text: #1a1a1a;
-            --subtext: #555;
-            --accent: #0078ff;
-            --accent-hover: #005fcc;
-            --bubble-user: #0078ff;
-            --bubble-bot: #e8ecf5;
-            --sidebar: #ffffff;
-            --border: #dde3ef;
+            --subtext: #666;
+            --accent-gold: #c9a227;
+            --accent-gold-hover: #b08c1f;
+            --accent-emerald: #2ecc71;
+            --accent-emerald-hover: #27ae60;
+            --border: #e0e0e0;
+            --sidebar-bg: #fafafa;
         }
 
         body.dark {
-            --bg: #0f1116;
-            --card: #1a1d24;
-            --text: #e6e6e6;
+            --bg: #0d0d0d;
+            --card: #1a1a1a;
+            --text: #f2f2f2;
             --subtext: #aaa;
-            --accent: #4c8dff;
-            --accent-hover: #2f6fe0;
-            --bubble-user: #4c8dff;
-            --bubble-bot: #2a2f3a;
-            --sidebar: #16191f;
-            --border: #2a2f3a;
+            --accent-gold: #d4af37;
+            --accent-gold-hover: #b8952f;
+            --accent-emerald: #2ecc71;
+            --accent-emerald-hover: #27ae60;
+            --border: #333;
+            --sidebar-bg: #111;
         }
 
-        /* ------------------------------
+        /* ---------------------------------------------------
            GLOBAL
-        ------------------------------ */
+        --------------------------------------------------- */
         * {
             box-sizing: border-box;
         }
@@ -52,27 +52,43 @@
             color: var(--text);
         }
 
-        /* ------------------------------
-           LAYOUT
-        ------------------------------ */
+        /* ---------------------------------------------------
+           SIDEBAR
+        --------------------------------------------------- */
         .sidebar {
-            width: 260px;
-            background: var(--sidebar);
+            width: 300px;
+            background: var(--sidebar-bg);
             padding: 20px;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             gap: 20px;
-            border-right: 1px solid var(--border);
+            overflow-y: auto;
         }
 
-        .sidebar h2 {
-            margin: 0;
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .monogram {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: var(--accent-gold);
+            font-size: 18px;
+        }
+
+        .logo-text {
             font-size: 20px;
-        }
-
-        .sidebar small {
-            color: var(--subtext);
+            font-weight: bold;
+            color: var(--accent-gold);
         }
 
         .section-title {
@@ -80,65 +96,70 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--subtext);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        .menu-btn {
+        /* ---------------------------------------------------
+           BOOK CARDS
+        --------------------------------------------------- */
+        .book-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .book-card {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--accent-gold);
+            background: var(--card);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .book-card:hover {
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+        }
+
+        .book-card.selected {
+            border-color: var(--accent-emerald);
+            background: rgba(46, 204, 113, 0.1);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+        }
+
+        .book-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .book-author {
+            font-size: 13px;
+            color: var(--subtext);
+        }
+
+        /* ---------------------------------------------------
+           BUTTONS
+        --------------------------------------------------- */
+        .menu-btn, .side-button {
             padding: 10px;
-            background: var(--accent);
+            background: var(--accent-gold);
             color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             transition: 0.2s;
             font-size: 14px;
-            text-align: left;
-        }
-
-        .menu-btn:hover {
-            background: var(--accent-hover);
-        }
-
-        .menu-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .small-input, .small-select {
             width: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: var(--text);
-            font-size: 13px;
         }
 
-        .small-label {
-            font-size: 12px;
-            color: var(--subtext);
-            margin-top: 6px;
+        .menu-btn:hover, .side-button:hover {
+            background: var(--accent-gold-hover);
         }
 
-        .side-button {
-            margin-top: 10px;
-            width: 100%;
-            padding: 8px;
-            font-size: 13px;
-            border-radius: 8px;
-            border: 1px solid var(--accent);
-            background: transparent;
-            color: var(--accent);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .side-button:hover {
-            background: var(--accent);
-            color: white;
-        }
-
+        /* ---------------------------------------------------
+           MAIN CHAT AREA
+        --------------------------------------------------- */
         .main {
             flex: 1;
             display: flex;
@@ -152,7 +173,7 @@
 
         .header {
             padding: 16px 20px;
-            background: var(--accent);
+            background: var(--accent-gold);
             color: white;
             display: flex;
             justify-content: space-between;
@@ -182,24 +203,18 @@
             font-weight: bold;
         }
 
-        .header-sub {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
         .toggle {
             cursor: pointer;
             font-size: 20px;
         }
 
-        /* ------------------------------
+        /* ---------------------------------------------------
            MESSAGES
-        ------------------------------ */
+        --------------------------------------------------- */
         .messages {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            background: radial-gradient(circle at top, rgba(0,120,255,0.05), transparent 50%);
         }
 
         .msg {
@@ -214,26 +229,27 @@
         }
 
         .user {
-            background: var(--bubble-user);
+            background: var(--accent-emerald);
             color: white;
             margin-left: auto;
             border-bottom-right-radius: 4px;
         }
 
         .bot {
-            background: var(--bubble-bot);
+            background: var(--bg);
             color: var(--text);
             margin-right: auto;
             border-bottom-left-radius: 4px;
             display: flex;
             gap: 10px;
             align-items: flex-start;
+            border: 1px solid var(--border);
         }
 
         .bot-avatar {
             width: 30px;
             height: 30px;
-            background: var(--accent);
+            background: var(--accent-gold);
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -243,15 +259,6 @@
             flex-shrink: 0;
         }
 
-        .bot-text {
-            white-space: pre-wrap;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .typing {
             font-style: italic;
             color: var(--subtext);
@@ -259,9 +266,9 @@
             font-size: 13px;
         }
 
-        /* ------------------------------
+        /* ---------------------------------------------------
            INPUT AREA
-        ------------------------------ */
+        --------------------------------------------------- */
         .input-area {
             padding: 12px 16px;
             display: flex;
@@ -285,7 +292,7 @@
 
         .send-btn {
             padding: 0 20px;
-            background: var(--accent);
+            background: var(--accent-emerald);
             color: white;
             border: none;
             border-radius: 12px;
@@ -295,110 +302,60 @@
         }
 
         .send-btn:hover {
-            background: var(--accent-hover);
+            background: var(--accent-emerald-hover);
         }
 
-        /* ------------------------------
-           RESPONSIVE
-        ------------------------------ */
-        @media (max-width: 900px) {
-            body {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                flex-direction: row;
-                flex-wrap: wrap;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-            }
-            .main {
-                margin: 0;
-                border-radius: 0;
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
+
 <body>
 
-<!-- SIDEBAR: FUNCȚII RAPIDE + ENDPOINT-URI REALE -->
+<!-- SIDEBAR -->
 <div class="sidebar">
-    <div>
-        <h2>Marketing Bot</h2>
-        <small>Asistent pentru promovarea cărților</small>
+    <div class="logo-area">
+        <div class="monogram">ET</div>
+        <div class="logo-text">ET Marketing Bot</div>
     </div>
 
     <div>
-        <div class="section-title">Chat rapid</div>
-        <div class="menu-group">
-            <button class="menu-btn" onclick="quick('Scrie un text scurt pentru Facebook despre cartea mea, ton prietenos.')">
-                Facebook - postare scurtă
-            </button>
-            <button class="menu-btn" onclick="quick('Generează 3 texte diferite pentru reclame Google Ads pentru cartea mea.')">
-                Google Ads - 3 variante
-            </button>
-            <button class="menu-btn" onclick="quick('Scrie un email de lansare pentru cartea mea, focus pe beneficii.')">
-                Email de lansare
-            </button>
-            <button class="menu-btn" onclick="quick('Creează un plan de campanie lunară pentru promovarea unei cărți.')">
-                Campanie lunară
-            </button>
-        </div>
+        <div class="section-title">Cărțile tale</div>
+        <div id="bookList" class="book-list"></div>
     </div>
 
     <div>
-        <div class="section-title">Generare directă (API real)</div>
-        <small class="small-label">ID carte (book_id)</small>
-        <input id="bookId" class="small-input" placeholder="ex: 1" />
-
-        <small class="small-label">Ton Facebook</small>
-        <input id="tone" class="small-input" placeholder="ex: prietenos, emoționant" />
-
-        <button class="side-button" onclick="callFacebookPost()">
-            Generează postare Facebook
+        <div class="section-title">Acțiuni rapide</div>
+        <button class="menu-btn" onclick="quick('Scrie o postare Facebook pentru cartea selectată, ton prietenos.')">
+            Postare Facebook
         </button>
-
-        <small class="small-label">Emoție reclamă</small>
-        <input id="emotion" class="small-input" placeholder="ex: entuziasm" />
-        <small class="small-label">Beneficiu principal</small>
-        <input id="benefit" class="small-input" placeholder="ex: învață X în Y zile" />
-
-        <button class="side-button" onclick="callAdTexts()">
-            Generează texte Ads
+        <button class="menu-btn" onclick="quick('Generează 3 texte pentru reclame Google Ads pentru cartea selectată.')">
+            Google Ads
         </button>
-
-        <button class="side-button" onclick="callLongDescription()">
-            Descriere lungă
+        <button class="menu-btn" onclick="quick('Creează un email de lansare pentru cartea selectată.')">
+            Email Lansare
         </button>
-
-        <button class="side-button" onclick="callLaunchEmail()">
-            Email lansare
-        </button>
-
-        <button class="side-button" onclick="callMonthlyCampaign()">
-            Campanie lunară
+        <button class="menu-btn" onclick="quick('Creează o campanie lunară pentru cartea selectată.')">
+            Campanie Lună
         </button>
     </div>
 
     <div>
         <div class="section-title">Conversație</div>
-        <button class="side-button" onclick="exportConversation()">
-            Exportă conversația
-        </button>
-        <button class="side-button" onclick="clearConversation()">
-            Șterge conversația
-        </button>
+        <button class="side-button" onclick="exportConversation()">Exportă conversația</button>
+        <button class="side-button" onclick="clearConversation()">Șterge conversația</button>
     </div>
 </div>
 
-<!-- ZONA PRINCIPALĂ: CHAT -->
+<!-- MAIN CHAT -->
 <div class="main">
     <div class="header">
         <div class="header-left">
-            <div class="bot-logo">🤖</div>
+            <div class="bot-logo">👽</div>
             <div>
-                <div class="header-title">Marketing Bot</div>
-                <div class="header-sub">Scrie un mesaj sau folosește butoanele din stânga</div>
+                <div class="header-title">ET Marketing Bot</div>
             </div>
         </div>
         <div class="toggle" onclick="toggleTheme()">🌙</div>
@@ -413,29 +370,55 @@
 </div>
 
 <script>
-    // ------------------------------
-    // TEMA (DARK / LIGHT)
-    // ------------------------------
+    let selectedBookId = null;
+
+    /* ---------------------------------------------------
+       THEME
+    --------------------------------------------------- */
     function toggleTheme() {
         document.body.classList.toggle("dark");
-        saveTheme();
-    }
-
-    function saveTheme() {
-        const theme = document.body.classList.contains("dark") ? "dark" : "light";
-        localStorage.setItem("theme", theme);
+        localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
     }
 
     function loadTheme() {
         const theme = localStorage.getItem("theme");
-        if (theme === "dark") {
-            document.body.classList.add("dark");
+        if (theme === "dark") document.body.classList.add("dark");
+    }
+
+    /* ---------------------------------------------------
+       BOOK LIST
+    --------------------------------------------------- */
+    async function loadBooks() {
+        try {
+            const res = await fetch("/books");
+            const books = await res.json();
+            const list = document.getElementById("bookList");
+            list.innerHTML = "";
+
+            books.forEach(book => {
+                const card = document.createElement("div");
+                card.className = "book-card";
+                card.innerHTML = `
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">${book.author}</div>
+                `;
+                card.onclick = () => selectBook(book.id, card);
+                list.appendChild(card);
+            });
+        } catch {
+            console.error("Nu pot încărca cărțile.");
         }
     }
 
-    // ------------------------------
-    // CONVERSAȚIE + LOCALSTORAGE
-    // ------------------------------
+    function selectBook(id, card) {
+        selectedBookId = id;
+        document.querySelectorAll(".book-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+    }
+
+    /* ---------------------------------------------------
+       CHAT
+    --------------------------------------------------- */
     function addMessage(text, type) {
         const box = document.getElementById("messages");
         const div = document.createElement("div");
@@ -443,8 +426,8 @@
 
         if (type === "bot") {
             div.innerHTML = `
-                <div class="bot-avatar">🤖</div>
-                <div class="bot-text">${text}</div>
+                <div class="bot-avatar">👽</div>
+                <div>${text}</div>
             `;
         } else {
             div.innerText = text;
@@ -452,18 +435,15 @@
 
         box.appendChild(div);
         box.scrollTop = box.scrollHeight;
-
         saveConversation();
     }
 
     function showTyping() {
         const box = document.getElementById("messages");
-        const existing = document.getElementById("typing");
-        if (existing) return;
         const div = document.createElement("div");
         div.id = "typing";
         div.className = "typing";
-        div.innerText = "Botul scrie…";
+        div.innerText = "ET scrie…";
         box.appendChild(div);
         box.scrollTop = box.scrollHeight;
     }
@@ -473,55 +453,6 @@
         if (t) t.remove();
     }
 
-    function saveConversation() {
-        const box = document.getElementById("messages");
-        localStorage.setItem("conversation", box.innerHTML);
-    }
-
-    function loadConversation() {
-        const saved = localStorage.getItem("conversation");
-        if (saved) {
-            document.getElementById("messages").innerHTML = saved;
-        } else {
-            // mesaj de întâmpinare
-            addMessage("Bun venit! Sunt Marketing Bot. Poți scrie liber în chat sau folosi funcțiile din stânga pentru a genera conținut despre cărțile tale.", "bot");
-        }
-    }
-
-    function clearConversation() {
-        if (confirm("Sigur vrei să ștergi conversația?")) {
-            localStorage.removeItem("conversation");
-            document.getElementById("messages").innerHTML = "";
-            addMessage("Conversația a fost resetată. Putem începe din nou.", "bot");
-        }
-    }
-
-    function exportConversation() {
-        const box = document.getElementById("messages");
-        const temp = document.createElement("div");
-        temp.innerHTML = box.innerHTML;
-
-        // scoatem avatarul vizual, păstrăm doar textul
-        const msgs = temp.querySelectorAll(".msg");
-        let text = "";
-        msgs.forEach(m => {
-            const isUser = m.classList.contains("user");
-            let content = m.innerText.trim();
-            text += (isUser ? "TU: " : "BOT: ") + content + "\n\n";
-        });
-
-        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "conversatie_marketing_bot.txt";
-        a.click();
-        URL.revokeObjectURL(url);
-    }
-
-    // ------------------------------
-    // CHAT GENERAL (/chat)
-    // ------------------------------
     async function sendMessage() {
         const input = document.getElementById("input");
         const text = input.value.trim();
@@ -541,10 +472,10 @@
 
             const data = await response.json();
             hideTyping();
-            addMessage(data.reply || JSON.stringify(data), "bot");
-        } catch (e) {
+            addMessage(data.reply, "bot");
+        } catch {
             hideTyping();
-            addMessage("A apărut o eroare la comunicarea cu serverul.", "bot");
+            addMessage("Eroare la comunicarea cu serverul.", "bot");
         }
     }
 
@@ -553,153 +484,48 @@
         sendMessage();
     }
 
-    // ------------------------------
-    // INTEGRARE CU ENDPOINT-URILE REALE
-    // ------------------------------
-    function getBookId() {
-        const v = document.getElementById("bookId").value.trim();
-        return v ? parseInt(v, 10) : null;
+    /* ---------------------------------------------------
+       CONVERSATION STORAGE
+    --------------------------------------------------- */
+    function saveConversation() {
+        localStorage.setItem("conversation", document.getElementById("messages").innerHTML);
     }
 
-    async function callFacebookPost() {
-        const book_id = getBookId();
-        const tone = document.getElementById("tone").value.trim() || "prietenoasă";
-        if (!book_id) {
-            alert("Te rog introdu un book_id (ex: 1).");
-            return;
-        }
-
-        addMessage(`Generez postare Facebook pentru cartea ${book_id}, ton: ${tone}...`, "user");
-        showTyping();
-
-        try {
-            const res = await fetch("/generate/facebook_post", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ book_id, tone })
-            });
-            const data = await res.json();
-            hideTyping();
-            addMessage(data.text || JSON.stringify(data), "bot");
-        } catch (e) {
-            hideTyping();
-            addMessage("Eroare la generarea postării Facebook.", "bot");
-        }
-    }
-
-    async function callAdTexts() {
-        const book_id = getBookId();
-        const emotion = document.getElementById("emotion").value.trim() || "entuziasm";
-        const main_benefit = document.getElementById("benefit").value.trim() || "beneficiul principal al cărții";
-        if (!book_id) {
-            alert("Te rog introdu un book_id (ex: 1).");
-            return;
-        }
-
-        addMessage(`Generez texte de Ads pentru cartea ${book_id} (emoție: ${emotion}, beneficiu: ${main_benefit})...`, "user");
-        showTyping();
-
-        try {
-            const res = await fetch("/generate/ad_texts", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ book_id, emotion, main_benefit })
-            });
-            const data = await res.json();
-            hideTyping();
-            const texts = data.texts || data.posts || data.text || JSON.stringify(data);
-            addMessage(Array.isArray(texts) ? texts.join("\n\n") : texts, "bot");
-        } catch (e) {
-            hideTyping();
-            addMessage("Eroare la generarea textelor de Ads.", "bot");
-        }
-    }
-
-    async function callLongDescription() {
-        const book_id = getBookId();
-        if (!book_id) {
-            alert("Te rog introdu un book_id (ex: 1).");
-            return;
-        }
-
-        addMessage(`Generez descriere lungă pentru cartea ${book_id}...`, "user");
-        showTyping();
-
-        try {
-            const res = await fetch("/generate/long_description", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ book_id })
-            });
-            const data = await res.json();
-            hideTyping();
-            addMessage(data.text || JSON.stringify(data), "bot");
-        } catch (e) {
-            hideTyping();
-            addMessage("Eroare la generarea descrierii lungi.", "bot");
-        }
-    }
-
-    async function callLaunchEmail() {
-        const book_id = getBookId();
-        if (!book_id) {
-            alert("Te rog introdu un book_id (ex: 1).");
-            return;
-        }
-
-        addMessage(`Generez email de lansare pentru cartea ${book_id}...`, "user");
-        showTyping();
-
-        try {
-            const res = await fetch("/generate/launch_email", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ book_id })
-            });
-            const data = await res.json();
-            hideTyping();
-            // launch_email pare să returneze direct text / dict
+    function loadConversation() {
+        const saved = localStorage.getItem("conversation");
+        if (saved) {
+            document.getElementById("messages").innerHTML = saved;
+        } else {
             addMessage(
-                data.text || data.email || JSON.stringify(data),
+                "Salut! Eu sunt ET 👽, asistentul tău premium pentru marketingul cărților. Alege o carte din stânga sau scrie-mi direct în chat.",
                 "bot"
             );
-        } catch (e) {
-            hideTyping();
-            addMessage("Eroare la generarea emailului de lansare.", "bot");
         }
     }
 
-    async function callMonthlyCampaign() {
-        const book_id = getBookId();
-        if (!book_id) {
-            alert("Te rog introdu un book_id (ex: 1).");
-            return;
-        }
-
-        addMessage(`Generez campanie lunară pentru cartea ${book_id}...`, "user");
-        showTyping();
-
-        try {
-            const res = await fetch("/generate/monthly_campaign", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ book_id })
-            });
-            const data = await res.json();
-            hideTyping();
-            const posts = data.posts || data.texts || JSON.stringify(data);
-            addMessage(Array.isArray(posts) ? posts.join("\n\n") : posts, "bot");
-        } catch (e) {
-            hideTyping();
-            addMessage("Eroare la generarea campaniei lunare.", "bot");
-        }
+    function clearConversation() {
+        localStorage.removeItem("conversation");
+        document.getElementById("messages").innerHTML = "";
+        addMessage("Conversația a fost resetată.", "bot");
     }
 
-    // ------------------------------
-    // INIT
-    // ------------------------------
+    function exportConversation() {
+        const text = document.getElementById("messages").innerText;
+        const blob = new Blob([text], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "conversatie_ET.txt";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    /* ---------------------------------------------------
+       INIT
+    --------------------------------------------------- */
     window.onload = () => {
         loadTheme();
+        loadBooks();
         loadConversation();
     };
 </script>

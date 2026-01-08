@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Marketing Bot</title>
+
     <style>
+        /* ------------------------------
+           THEME VARIABLES
+        ------------------------------ */
         :root {
             --bg: #f5f7fa;
             --card: #ffffff;
@@ -13,6 +17,7 @@
             --accent-hover: #005fcc;
             --bubble-user: #0078ff;
             --bubble-bot: #e8ecf5;
+            --sidebar: #ffffff;
         }
 
         body.dark {
@@ -24,8 +29,12 @@
             --accent-hover: #2f6fe0;
             --bubble-user: #4c8dff;
             --bubble-bot: #2a2f3a;
+            --sidebar: #16191f;
         }
 
+        /* ------------------------------
+           GLOBAL
+        ------------------------------ */
         body {
             margin: 0;
             padding: 0;
@@ -33,19 +42,53 @@
             font-family: "Segoe UI", Arial, sans-serif;
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
             transition: 0.3s;
         }
 
-        .chat-container {
-            width: 420px;
-            height: 90vh;
-            background: var(--card);
-            border-radius: 18px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        /* ------------------------------
+           SIDEBAR
+        ------------------------------ */
+        .sidebar {
+            width: 220px;
+            background: var(--sidebar);
+            padding: 20px;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar h2 {
+            margin: 0 0 10px 0;
+            color: var(--text);
+        }
+
+        .menu-btn {
+            padding: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 15px;
+        }
+
+        .menu-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* ------------------------------
+           CHAT CONTAINER
+        ------------------------------ */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--card);
+            margin: 20px;
+            border-radius: 18px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             overflow: hidden;
         }
 
@@ -62,9 +105,12 @@
 
         .toggle {
             cursor: pointer;
-            font-size: 18px;
+            font-size: 20px;
         }
 
+        /* ------------------------------
+           MESSAGES
+        ------------------------------ */
         .messages {
             flex: 1;
             padding: 20px;
@@ -78,6 +124,7 @@
             border-radius: 14px;
             font-size: 15px;
             animation: fadeIn 0.3s ease;
+            line-height: 1.4;
         }
 
         .user {
@@ -92,6 +139,21 @@
             color: var(--text);
             margin-right: auto;
             border-bottom-left-radius: 4px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .bot-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
         }
 
         @keyframes fadeIn {
@@ -99,6 +161,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ------------------------------
+           INPUT AREA
+        ------------------------------ */
         .input-area {
             padding: 15px;
             display: flex;
@@ -132,10 +197,42 @@
         button:hover {
             background: var(--accent-hover);
         }
+
+        /* ------------------------------
+           TYPING INDICATOR
+        ------------------------------ */
+        .typing {
+            font-style: italic;
+            color: var(--subtext);
+            margin-bottom: 10px;
+        }
     </style>
 </head>
+
 <body>
 
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>Funcții rapide</h2>
+
+    <button class="menu-btn" onclick="quick('Scrie un text pentru Facebook despre cartea mea.')">
+        Facebook Post
+    </button>
+
+    <button class="menu-btn" onclick="quick('Generează texte pentru reclame Google Ads.')">
+        Google Ads
+    </button>
+
+    <button class="menu-btn" onclick="quick('Creează un email de lansare pentru cartea mea.')">
+        Email Lansare
+    </button>
+
+    <button class="menu-btn" onclick="quick('Creează o campanie lunară pentru promovarea cărții.')">
+        Campanie Lunară
+    </button>
+</div>
+
+<!-- CHAT -->
 <div class="chat-container">
     <div class="header">
         🤖 Marketing Bot
@@ -155,6 +252,11 @@ function toggleTheme() {
     document.body.classList.toggle("dark");
 }
 
+function quick(text) {
+    document.getElementById("input").value = text;
+    sendMessage();
+}
+
 async function sendMessage() {
     const input = document.getElementById("input");
     const text = input.value.trim();
@@ -163,11 +265,15 @@ async function sendMessage() {
     addMessage(text, "user");
     input.value = "";
 
+    showTyping();
+
     const response = await fetch("/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text })
     });
+
+    hideTyping();
 
     const data = await response.json();
     addMessage(data.reply, "bot");
@@ -175,11 +281,36 @@ async function sendMessage() {
 
 function addMessage(text, type) {
     const box = document.getElementById("messages");
+
     const div = document.createElement("div");
     div.className = "msg " + type;
-    div.innerText = text;
+
+    if (type === "bot") {
+        div.innerHTML = `
+            <div class="bot-avatar">🤖</div>
+            <div>${text}</div>
+        `;
+    } else {
+        div.innerText = text;
+    }
+
     box.appendChild(div);
     box.scrollTop = box.scrollHeight;
+}
+
+function showTyping() {
+    const box = document.getElementById("messages");
+    const div = document.createElement("div");
+    div.id = "typing";
+    div.className = "typing";
+    div.innerText = "Botul scrie…";
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+function hideTyping() {
+    const t = document.getElementById("typing");
+    if (t) t.remove();
 }
 </script>
 

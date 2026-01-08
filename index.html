@@ -18,6 +18,7 @@
             --bubble-user: #0078ff;
             --bubble-bot: #e8ecf5;
             --sidebar: #ffffff;
+            --border: #dde3ef;
         }
 
         body.dark {
@@ -30,11 +31,16 @@
             --bubble-user: #4c8dff;
             --bubble-bot: #2a2f3a;
             --sidebar: #16191f;
+            --border: #2a2f3a;
         }
 
         /* ------------------------------
            GLOBAL
         ------------------------------ */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -43,64 +49,142 @@
             height: 100vh;
             display: flex;
             transition: 0.3s;
-        }
-
-        /* ------------------------------
-           SIDEBAR
-        ------------------------------ */
-        .sidebar {
-            width: 220px;
-            background: var(--sidebar);
-            padding: 20px;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .sidebar h2 {
-            margin: 0 0 10px 0;
             color: var(--text);
         }
 
+        /* ------------------------------
+           LAYOUT
+        ------------------------------ */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar);
+            padding: 20px;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .sidebar small {
+            color: var(--subtext);
+        }
+
+        .section-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--subtext);
+            margin-bottom: 8px;
+        }
+
         .menu-btn {
-            padding: 12px;
+            padding: 10px;
             background: var(--accent);
             color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             transition: 0.2s;
-            font-size: 15px;
+            font-size: 14px;
+            text-align: left;
         }
 
         .menu-btn:hover {
             background: var(--accent-hover);
         }
 
-        /* ------------------------------
-           CHAT CONTAINER
-        ------------------------------ */
-        .chat-container {
+        .menu-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .small-input, .small-select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .small-label {
+            font-size: 12px;
+            color: var(--subtext);
+            margin-top: 6px;
+        }
+
+        .side-button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 8px;
+            font-size: 13px;
+            border-radius: 8px;
+            border: 1px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .side-button:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .main {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: var(--card);
-            margin: 20px;
+            margin: 16px;
             border-radius: 18px;
+            background: var(--card);
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             overflow: hidden;
         }
 
         .header {
-            padding: 20px;
+            padding: 16px 20px;
             background: var(--accent);
             color: white;
-            font-size: 20px;
-            font-weight: bold;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bot-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.1);
+            font-size: 20px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .header-sub {
+            font-size: 12px;
+            opacity: 0.9;
         }
 
         .toggle {
@@ -115,6 +199,7 @@
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+            background: radial-gradient(circle at top, rgba(0,120,255,0.05), transparent 50%);
         }
 
         .msg {
@@ -123,8 +208,9 @@
             margin-bottom: 12px;
             border-radius: 14px;
             font-size: 15px;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.25s ease;
             line-height: 1.4;
+            word-wrap: break-word;
         }
 
         .user {
@@ -145,8 +231,8 @@
         }
 
         .bot-avatar {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             background: var(--accent);
             border-radius: 50%;
             display: flex;
@@ -154,20 +240,33 @@
             align-items: center;
             color: white;
             font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .bot-text {
+            white-space: pre-wrap;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .typing {
+            font-style: italic;
+            color: var(--subtext);
+            margin-bottom: 10px;
+            font-size: 13px;
         }
 
         /* ------------------------------
            INPUT AREA
         ------------------------------ */
         .input-area {
-            padding: 15px;
+            padding: 12px 16px;
             display: flex;
             gap: 10px;
+            border-top: 1px solid var(--border);
             background: var(--card);
         }
 
@@ -175,16 +274,16 @@
             flex: 1;
             height: 50px;
             border-radius: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--border);
             padding: 10px;
             resize: none;
-            font-size: 15px;
+            font-size: 14px;
             outline: none;
             background: var(--bg);
             color: var(--text);
         }
 
-        button {
+        .send-btn {
             padding: 0 20px;
             background: var(--accent);
             color: white;
@@ -192,50 +291,116 @@
             border-radius: 12px;
             cursor: pointer;
             transition: 0.2s;
+            font-size: 14px;
         }
 
-        button:hover {
+        .send-btn:hover {
             background: var(--accent-hover);
         }
 
         /* ------------------------------
-           TYPING INDICATOR
+           RESPONSIVE
         ------------------------------ */
-        .typing {
-            font-style: italic;
-            color: var(--subtext);
-            margin-bottom: 10px;
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .main {
+                margin: 0;
+                border-radius: 0;
+            }
         }
     </style>
 </head>
-
 <body>
 
-<!-- SIDEBAR -->
+<!-- SIDEBAR: FUNCȚII RAPIDE + ENDPOINT-URI REALE -->
 <div class="sidebar">
-    <h2>Funcții rapide</h2>
+    <div>
+        <h2>Marketing Bot</h2>
+        <small>Asistent pentru promovarea cărților</small>
+    </div>
 
-    <button class="menu-btn" onclick="quick('Scrie un text pentru Facebook despre cartea mea.')">
-        Facebook Post
-    </button>
+    <div>
+        <div class="section-title">Chat rapid</div>
+        <div class="menu-group">
+            <button class="menu-btn" onclick="quick('Scrie un text scurt pentru Facebook despre cartea mea, ton prietenos.')">
+                Facebook - postare scurtă
+            </button>
+            <button class="menu-btn" onclick="quick('Generează 3 texte diferite pentru reclame Google Ads pentru cartea mea.')">
+                Google Ads - 3 variante
+            </button>
+            <button class="menu-btn" onclick="quick('Scrie un email de lansare pentru cartea mea, focus pe beneficii.')">
+                Email de lansare
+            </button>
+            <button class="menu-btn" onclick="quick('Creează un plan de campanie lunară pentru promovarea unei cărți.')">
+                Campanie lunară
+            </button>
+        </div>
+    </div>
 
-    <button class="menu-btn" onclick="quick('Generează texte pentru reclame Google Ads.')">
-        Google Ads
-    </button>
+    <div>
+        <div class="section-title">Generare directă (API real)</div>
+        <small class="small-label">ID carte (book_id)</small>
+        <input id="bookId" class="small-input" placeholder="ex: 1" />
 
-    <button class="menu-btn" onclick="quick('Creează un email de lansare pentru cartea mea.')">
-        Email Lansare
-    </button>
+        <small class="small-label">Ton Facebook</small>
+        <input id="tone" class="small-input" placeholder="ex: prietenos, emoționant" />
 
-    <button class="menu-btn" onclick="quick('Creează o campanie lunară pentru promovarea cărții.')">
-        Campanie Lunară
-    </button>
+        <button class="side-button" onclick="callFacebookPost()">
+            Generează postare Facebook
+        </button>
+
+        <small class="small-label">Emoție reclamă</small>
+        <input id="emotion" class="small-input" placeholder="ex: entuziasm" />
+        <small class="small-label">Beneficiu principal</small>
+        <input id="benefit" class="small-input" placeholder="ex: învață X în Y zile" />
+
+        <button class="side-button" onclick="callAdTexts()">
+            Generează texte Ads
+        </button>
+
+        <button class="side-button" onclick="callLongDescription()">
+            Descriere lungă
+        </button>
+
+        <button class="side-button" onclick="callLaunchEmail()">
+            Email lansare
+        </button>
+
+        <button class="side-button" onclick="callMonthlyCampaign()">
+            Campanie lunară
+        </button>
+    </div>
+
+    <div>
+        <div class="section-title">Conversație</div>
+        <button class="side-button" onclick="exportConversation()">
+            Exportă conversația
+        </button>
+        <button class="side-button" onclick="clearConversation()">
+            Șterge conversația
+        </button>
+    </div>
 </div>
 
-<!-- CHAT -->
-<div class="chat-container">
+<!-- ZONA PRINCIPALĂ: CHAT -->
+<div class="main">
     <div class="header">
-        🤖 Marketing Bot
+        <div class="header-left">
+            <div class="bot-logo">🤖</div>
+            <div>
+                <div class="header-title">Marketing Bot</div>
+                <div class="header-sub">Scrie un mesaj sau folosește butoanele din stânga</div>
+            </div>
+        </div>
         <div class="toggle" onclick="toggleTheme()">🌙</div>
     </div>
 
@@ -243,75 +408,300 @@
 
     <div class="input-area">
         <textarea id="input" placeholder="Scrie mesajul..."></textarea>
-        <button onclick="sendMessage()">Trimite</button>
+        <button class="send-btn" onclick="sendMessage()">Trimite</button>
     </div>
 </div>
 
 <script>
-function toggleTheme() {
-    document.body.classList.toggle("dark");
-}
-
-function quick(text) {
-    document.getElementById("input").value = text;
-    sendMessage();
-}
-
-async function sendMessage() {
-    const input = document.getElementById("input");
-    const text = input.value.trim();
-    if (!text) return;
-
-    addMessage(text, "user");
-    input.value = "";
-
-    showTyping();
-
-    const response = await fetch("/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text })
-    });
-
-    hideTyping();
-
-    const data = await response.json();
-    addMessage(data.reply, "bot");
-}
-
-function addMessage(text, type) {
-    const box = document.getElementById("messages");
-
-    const div = document.createElement("div");
-    div.className = "msg " + type;
-
-    if (type === "bot") {
-        div.innerHTML = `
-            <div class="bot-avatar">🤖</div>
-            <div>${text}</div>
-        `;
-    } else {
-        div.innerText = text;
+    // ------------------------------
+    // TEMA (DARK / LIGHT)
+    // ------------------------------
+    function toggleTheme() {
+        document.body.classList.toggle("dark");
+        saveTheme();
     }
 
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-}
+    function saveTheme() {
+        const theme = document.body.classList.contains("dark") ? "dark" : "light";
+        localStorage.setItem("theme", theme);
+    }
 
-function showTyping() {
-    const box = document.getElementById("messages");
-    const div = document.createElement("div");
-    div.id = "typing";
-    div.className = "typing";
-    div.innerText = "Botul scrie…";
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-}
+    function loadTheme() {
+        const theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+            document.body.classList.add("dark");
+        }
+    }
 
-function hideTyping() {
-    const t = document.getElementById("typing");
-    if (t) t.remove();
-}
+    // ------------------------------
+    // CONVERSAȚIE + LOCALSTORAGE
+    // ------------------------------
+    function addMessage(text, type) {
+        const box = document.getElementById("messages");
+        const div = document.createElement("div");
+        div.className = "msg " + type;
+
+        if (type === "bot") {
+            div.innerHTML = `
+                <div class="bot-avatar">🤖</div>
+                <div class="bot-text">${text}</div>
+            `;
+        } else {
+            div.innerText = text;
+        }
+
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+
+        saveConversation();
+    }
+
+    function showTyping() {
+        const box = document.getElementById("messages");
+        const existing = document.getElementById("typing");
+        if (existing) return;
+        const div = document.createElement("div");
+        div.id = "typing";
+        div.className = "typing";
+        div.innerText = "Botul scrie…";
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function hideTyping() {
+        const t = document.getElementById("typing");
+        if (t) t.remove();
+    }
+
+    function saveConversation() {
+        const box = document.getElementById("messages");
+        localStorage.setItem("conversation", box.innerHTML);
+    }
+
+    function loadConversation() {
+        const saved = localStorage.getItem("conversation");
+        if (saved) {
+            document.getElementById("messages").innerHTML = saved;
+        } else {
+            // mesaj de întâmpinare
+            addMessage("Bun venit! Sunt Marketing Bot. Poți scrie liber în chat sau folosi funcțiile din stânga pentru a genera conținut despre cărțile tale.", "bot");
+        }
+    }
+
+    function clearConversation() {
+        if (confirm("Sigur vrei să ștergi conversația?")) {
+            localStorage.removeItem("conversation");
+            document.getElementById("messages").innerHTML = "";
+            addMessage("Conversația a fost resetată. Putem începe din nou.", "bot");
+        }
+    }
+
+    function exportConversation() {
+        const box = document.getElementById("messages");
+        const temp = document.createElement("div");
+        temp.innerHTML = box.innerHTML;
+
+        // scoatem avatarul vizual, păstrăm doar textul
+        const msgs = temp.querySelectorAll(".msg");
+        let text = "";
+        msgs.forEach(m => {
+            const isUser = m.classList.contains("user");
+            let content = m.innerText.trim();
+            text += (isUser ? "TU: " : "BOT: ") + content + "\n\n";
+        });
+
+        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "conversatie_marketing_bot.txt";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ------------------------------
+    // CHAT GENERAL (/chat)
+    // ------------------------------
+    async function sendMessage() {
+        const input = document.getElementById("input");
+        const text = input.value.trim();
+        if (!text) return;
+
+        addMessage(text, "user");
+        input.value = "";
+
+        showTyping();
+
+        try {
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: text })
+            });
+
+            const data = await response.json();
+            hideTyping();
+            addMessage(data.reply || JSON.stringify(data), "bot");
+        } catch (e) {
+            hideTyping();
+            addMessage("A apărut o eroare la comunicarea cu serverul.", "bot");
+        }
+    }
+
+    function quick(text) {
+        document.getElementById("input").value = text;
+        sendMessage();
+    }
+
+    // ------------------------------
+    // INTEGRARE CU ENDPOINT-URILE REALE
+    // ------------------------------
+    function getBookId() {
+        const v = document.getElementById("bookId").value.trim();
+        return v ? parseInt(v, 10) : null;
+    }
+
+    async function callFacebookPost() {
+        const book_id = getBookId();
+        const tone = document.getElementById("tone").value.trim() || "prietenoasă";
+        if (!book_id) {
+            alert("Te rog introdu un book_id (ex: 1).");
+            return;
+        }
+
+        addMessage(`Generez postare Facebook pentru cartea ${book_id}, ton: ${tone}...`, "user");
+        showTyping();
+
+        try {
+            const res = await fetch("/generate/facebook_post", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ book_id, tone })
+            });
+            const data = await res.json();
+            hideTyping();
+            addMessage(data.text || JSON.stringify(data), "bot");
+        } catch (e) {
+            hideTyping();
+            addMessage("Eroare la generarea postării Facebook.", "bot");
+        }
+    }
+
+    async function callAdTexts() {
+        const book_id = getBookId();
+        const emotion = document.getElementById("emotion").value.trim() || "entuziasm";
+        const main_benefit = document.getElementById("benefit").value.trim() || "beneficiul principal al cărții";
+        if (!book_id) {
+            alert("Te rog introdu un book_id (ex: 1).");
+            return;
+        }
+
+        addMessage(`Generez texte de Ads pentru cartea ${book_id} (emoție: ${emotion}, beneficiu: ${main_benefit})...`, "user");
+        showTyping();
+
+        try {
+            const res = await fetch("/generate/ad_texts", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ book_id, emotion, main_benefit })
+            });
+            const data = await res.json();
+            hideTyping();
+            const texts = data.texts || data.posts || data.text || JSON.stringify(data);
+            addMessage(Array.isArray(texts) ? texts.join("\n\n") : texts, "bot");
+        } catch (e) {
+            hideTyping();
+            addMessage("Eroare la generarea textelor de Ads.", "bot");
+        }
+    }
+
+    async function callLongDescription() {
+        const book_id = getBookId();
+        if (!book_id) {
+            alert("Te rog introdu un book_id (ex: 1).");
+            return;
+        }
+
+        addMessage(`Generez descriere lungă pentru cartea ${book_id}...`, "user");
+        showTyping();
+
+        try {
+            const res = await fetch("/generate/long_description", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ book_id })
+            });
+            const data = await res.json();
+            hideTyping();
+            addMessage(data.text || JSON.stringify(data), "bot");
+        } catch (e) {
+            hideTyping();
+            addMessage("Eroare la generarea descrierii lungi.", "bot");
+        }
+    }
+
+    async function callLaunchEmail() {
+        const book_id = getBookId();
+        if (!book_id) {
+            alert("Te rog introdu un book_id (ex: 1).");
+            return;
+        }
+
+        addMessage(`Generez email de lansare pentru cartea ${book_id}...`, "user");
+        showTyping();
+
+        try {
+            const res = await fetch("/generate/launch_email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ book_id })
+            });
+            const data = await res.json();
+            hideTyping();
+            // launch_email pare să returneze direct text / dict
+            addMessage(
+                data.text || data.email || JSON.stringify(data),
+                "bot"
+            );
+        } catch (e) {
+            hideTyping();
+            addMessage("Eroare la generarea emailului de lansare.", "bot");
+        }
+    }
+
+    async function callMonthlyCampaign() {
+        const book_id = getBookId();
+        if (!book_id) {
+            alert("Te rog introdu un book_id (ex: 1).");
+            return;
+        }
+
+        addMessage(`Generez campanie lunară pentru cartea ${book_id}...`, "user");
+        showTyping();
+
+        try {
+            const res = await fetch("/generate/monthly_campaign", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ book_id })
+            });
+            const data = await res.json();
+            hideTyping();
+            const posts = data.posts || data.texts || JSON.stringify(data);
+            addMessage(Array.isArray(posts) ? posts.join("\n\n") : posts, "bot");
+        } catch (e) {
+            hideTyping();
+            addMessage("Eroare la generarea campaniei lunare.", "bot");
+        }
+    }
+
+    // ------------------------------
+    // INIT
+    // ------------------------------
+    window.onload = () => {
+        loadTheme();
+        loadConversation();
+    };
 </script>
 
 </body>

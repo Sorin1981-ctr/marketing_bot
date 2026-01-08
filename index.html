@@ -4,98 +4,164 @@
     <meta charset="UTF-8">
     <title>Marketing Bot</title>
     <style>
+        :root {
+            --bg: #f5f7fa;
+            --card: #ffffff;
+            --text: #1a1a1a;
+            --subtext: #555;
+            --accent: #0078ff;
+            --accent-hover: #005fcc;
+            --bubble-user: #0078ff;
+            --bubble-bot: #e8ecf5;
+        }
+
+        body.dark {
+            --bg: #0f1116;
+            --card: #1a1d24;
+            --text: #e6e6e6;
+            --subtext: #aaa;
+            --accent: #4c8dff;
+            --accent-hover: #2f6fe0;
+            --bubble-user: #4c8dff;
+            --bubble-bot: #2a2f3a;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background: #f5f7fa;
+            background: var(--bg);
             font-family: "Segoe UI", Arial, sans-serif;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            transition: 0.3s;
         }
 
-        .container {
+        .chat-container {
             width: 420px;
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
+            height: 90vh;
+            background: var(--card);
+            border-radius: 18px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        h1 {
-            margin-top: 0;
-            font-size: 28px;
-            color: #1a1a1a;
+        .header {
+            padding: 20px;
+            background: var(--accent);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        p {
-            color: #555;
-            margin-bottom: 25px;
+        .toggle {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .msg {
+            max-width: 80%;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            font-size: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user {
+            background: var(--bubble-user);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot {
+            background: var(--bubble-bot);
+            color: var(--text);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-area {
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            background: var(--card);
         }
 
         textarea {
-            width: 100%;
-            height: 100px;
-            padding: 12px;
-            border-radius: 10px;
+            flex: 1;
+            height: 50px;
+            border-radius: 12px;
             border: 1px solid #ccc;
+            padding: 10px;
             resize: none;
             font-size: 15px;
             outline: none;
-            transition: 0.2s;
-        }
-
-        textarea:focus {
-            border-color: #0078ff;
-            box-shadow: 0 0 5px rgba(0,120,255,0.3);
+            background: var(--bg);
+            color: var(--text);
         }
 
         button {
-            width: 100%;
-            padding: 12px;
-            background: #0078ff;
+            padding: 0 20px;
+            background: var(--accent);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 12px;
             cursor: pointer;
-            margin-top: 15px;
             transition: 0.2s;
         }
 
         button:hover {
-            background: #005fcc;
-        }
-
-        .response-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f0f4ff;
-            border-radius: 10px;
-            text-align: left;
-            color: #333;
-            font-size: 15px;
-            display: none;
+            background: var(--accent-hover);
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🤖 Marketing Bot</h1>
-    <p>Scrie un mesaj și botul îți răspunde instant.</p>
+<div class="chat-container">
+    <div class="header">
+        🤖 Marketing Bot
+        <div class="toggle" onclick="toggleTheme()">🌙</div>
+    </div>
 
-    <textarea id="input" placeholder="Scrie mesajul aici..."></textarea>
-    <button onclick="sendMessage()">Trimite</button>
+    <div class="messages" id="messages"></div>
 
-    <div id="response" class="response-box"></div>
+    <div class="input-area">
+        <textarea id="input" placeholder="Scrie mesajul..."></textarea>
+        <button onclick="sendMessage()">Trimite</button>
+    </div>
 </div>
 
 <script>
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+}
+
 async function sendMessage() {
-    const text = document.getElementById("input").value;
+    const input = document.getElementById("input");
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "user");
+    input.value = "";
 
     const response = await fetch("/chat", {
         method: "POST",
@@ -104,10 +170,16 @@ async function sendMessage() {
     });
 
     const data = await response.json();
+    addMessage(data.reply, "bot");
+}
 
-    const box = document.getElementById("response");
-    box.style.display = "block";
-    box.innerText = data.reply;
+function addMessage(text, type) {
+    const box = document.getElementById("messages");
+    const div = document.createElement("div");
+    div.className = "msg " + type;
+    div.innerText = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
 }
 </script>
 
